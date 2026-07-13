@@ -1,24 +1,34 @@
-// Your code her
-const boxes = document.querySelectorAll(".item");
-let isdragging = false;
-let currentbox;
-boxes.forEach((box)=>{
-	box.addEventListener("mousedown",(event)=>{
-		isdragging = true;
-		currentbox = box;
-	});
+const slider = document.querySelector(".items");
 
-	
-})
-document.addEventListener("mousemove",(event)=>{
-		if(isdragging){
-			currentbox.style.left = event.clientX + 'px';
-			currentbox.style.top = event.clientY + 'px';
-		}
-		
-	});
+let isDown = false;
+let startX;
+let scrollLeft;
 
-	document.addEventListener("mouseup",(event)=>{
-		isdragging = false;
-		currentbox = null;
-	})
+slider.addEventListener("mousedown", (e) => {
+    isDown = true;
+
+    // Mouse position inside the container
+    startX = e.pageX - slider.offsetLeft;
+
+    // Current scroll position
+    scrollLeft = slider.scrollLeft;
+});
+
+slider.addEventListener("mouseleave", () => {
+    isDown = false;
+});
+
+slider.addEventListener("mouseup", () => {
+    isDown = false;
+});
+
+slider.addEventListener("mousemove", (e) => {
+    if (!isDown) return;
+
+    e.preventDefault();
+
+    const x = e.pageX - slider.offsetLeft;
+    const walk = x - startX;
+
+    slider.scrollLeft = scrollLeft - walk;
+});
