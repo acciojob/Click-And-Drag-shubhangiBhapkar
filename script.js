@@ -1,48 +1,26 @@
-const container = document.querySelector(".items");
-const items = document.querySelectorAll(".item");
+const slider = document.querySelector(".items");
 
-let currentcube = null;
-let draggable = false;
+let isDown = false;
+let startX;
+let scrollLeft;
 
-let ofsetX = 0;
-let ofsetY = 0;
-
-items.forEach((item)=>{
-	item.addEventListener("mousedown", (e)=>{
-		currentcube = item;
-		draggable=true;
-		ofsetX = e.ofsetX;
-		ofsetY = e.ofsetY;
-
-		item.style.position = "absolute";
-	})
-	
+slider.addEventListener("mousedown", (e) => {
+    isDown = true;
+    startX = e.pageX;
+    scrollLeft = slider.scrollLeft;
 });
 
-document.addEventListener("mousemove",(e)=>{
-	if (!isDragging) return;
+slider.addEventListener("mousemove", (e) => {
+    if (!isDown) return;
 
-    const rect = container.getBoundingClientRect();
-
-    let x = e.clientX - rect.left - offsetX;
-    let y = e.clientY - rect.top - offsetY;
-
-    x = Math.max(
-        0,
-        Math.min(x, container.clientWidth - currentCube.offsetWidth)
-    );
-
-    y = Math.max(
-        0,
-        Math.min(y, container.clientHeight - currentCube.offsetHeight)
-    );
-
-    currentCube.style.left = x + "px";
-    currentCube.style.top = y + "px";
-
+    const walk = e.pageX - startX;
+    slider.scrollLeft = scrollLeft - walk;
 });
 
-document.addEventListener("mouseup",(e)=>{
-	currentcube = null;
-    draggable = false;
-})
+slider.addEventListener("mouseup", () => {
+    isDown = false;
+});
+
+slider.addEventListener("mouseleave", () => {
+    isDown = false;
+});
