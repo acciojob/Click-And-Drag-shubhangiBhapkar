@@ -8,25 +8,19 @@ let scrollLeft;
 items.addEventListener('mousedown', (e) => {
   isDown = true;
   items.classList.add('active');
-  startX = e.pageX - items.offsetLeft;
+  startX = e.clientX;
   scrollLeft = items.scrollLeft;
 });
 
-items.addEventListener('mouseleave', () => {
+document.addEventListener('mouseup', () => {
   isDown = false;
   items.classList.remove('active');
 });
 
-items.addEventListener('mouseup', () => {
-  isDown = false;
-  items.classList.remove('active');
-});
-
-items.addEventListener('mousemove', (e) => {
-  if (!isDown) return; // only run while mouse button is held
+document.addEventListener('mousemove', (e) => {
+  if (!isDown) return;
   e.preventDefault();
 
-  const x = e.pageX - items.offsetLeft;
-  const walk = (x - startX) * 1.5; // multiplier controls drag speed/sensitivity
+  const walk = (e.clientX - startX) * 1.5;
   items.scrollLeft = scrollLeft - walk;
 });
