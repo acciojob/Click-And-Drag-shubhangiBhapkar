@@ -1,34 +1,32 @@
-const slider = document.querySelector(".items");
+
+const items = document.querySelector('.items');
 
 let isDown = false;
 let startX;
 let scrollLeft;
 
-slider.addEventListener("mousedown", (e) => {
-    isDown = true;
-    slider.classList.add("active");
-
-    startX = e.pageX - slider.offsetLeft;
-    scrollLeft = slider.scrollLeft;
+items.addEventListener('mousedown', (e) => {
+  isDown = true;
+  items.classList.add('active');
+  startX = e.pageX - items.offsetLeft;
+  scrollLeft = items.scrollLeft;
 });
 
-slider.addEventListener("mouseleave", () => {
-    isDown = false;
-    slider.classList.remove("active");
+items.addEventListener('mouseleave', () => {
+  isDown = false;
+  items.classList.remove('active');
 });
 
-slider.addEventListener("mouseup", () => {
-    isDown = false;
-    slider.classList.remove("active");
+items.addEventListener('mouseup', () => {
+  isDown = false;
+  items.classList.remove('active');
 });
 
-slider.addEventListener("mousemove", (e) => {
-    if (!isDown) return;
+items.addEventListener('mousemove', (e) => {
+  if (!isDown) return; // only run while mouse button is held
+  e.preventDefault();
 
-    e.preventDefault();
-
-    const x = e.pageX - slider.offsetLeft;
-    const walk = (x - startX) * 3; // drag speed
-
-    slider.scrollLeft = scrollLeft - walk;
+  const x = e.pageX - items.offsetLeft;
+  const walk = (x - startX) * 1.5; // multiplier controls drag speed/sensitivity
+  items.scrollLeft = scrollLeft - walk;
 });
